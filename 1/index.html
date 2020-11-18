@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{
+        font-family: 'Kanit', sans-serif;
+    }
+    .col-3 {
+        border: 2px solid rgb(236, 236, 236);
+        border-radius: 3px;
+        margin-right: 30px;
+        margin-top: 30px;
+        padding: 0px;
+    }
+
+    p {
+        margin: 0px
+    }
+</style>
+<body>
+    <div class="container" id="test">
+
+
+    </div>
+</body>
+<script>
+    let requestURL = 'ezquiz.json';
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+            dataReportStatus(JSON.parse(request.responseText));
+        }
+    };
+    request.open("GET", requestURL, true);
+    request.send();
+
+    function dataReportStatus(data) {
+        out = "";
+        var count = 1;
+        for (var i = 0; i < data.tracks.items.length; i += 3) {
+            out += `<div class="row">`;
+            for (var i = 0; i < data.tracks.items.length; i++) {
+
+                out += `<div class="col-3">`;
+                out += `<img class="card-img-top" src="` + data.tracks.items[i].album.images[0].url + `">`;
+                out += `<div class="card-body">`;
+                out += ` <h5 class="card-title">` + data.tracks.items[i].album.name + ` </h5>`;
+                out += `<p class="card-text">Artist: ` + data.tracks.items[i].album.artists[0].name + `</p>`;
+                out += `<p class="card-text">Release date: ` + data.tracks.items[i].album.release_date + `</p>`;
+                out += `<p class="card-text">Avaliable: ` + data.tracks.items[i].album.available_markets.length + `</p>`;
+                out += `</div></div>`;
+
+            }
+            out += `</div>`;
+        }
+
+
+        document.getElementById("test").innerHTML = out;
+    }
+
+</script>
+</html>
